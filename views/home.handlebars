@@ -1,0 +1,35 @@
+<header>
+    <h1>To-Do-App</h1>
+</header>
+
+<section>
+    <h2>Projects</h2>
+</section>
+
+<div class="ravenous">
+    <a>
+        <img src="./Images/ravenous2.png" class="center">
+    </a>
+</div>
+
+<section>
+    <p class="link-style"> Link: <a href="https://github.com/erjiale/ravenous-website/tree/master/ravenous"> Ravenous Website Repository </a> </p>
+        <!--End of Project 1-->
+    <p class="link-style"> Link: <a href="https://github.com/erjiale/Dictionary-Pronunciation"> C++ Dictionary Repo </a> </p>
+        <!--End of Project 2-->
+</section>
+
+<footer>
+    <p></p>
+    <span>LinkedIn: <a href="https://www.linkedin.com/in/jiale-jay-qiu-548812181"> www.linkedin.com/in/jiale-jay-qiu-548812181 </a> </span>
+</footer>
+
+<section>
+    {{#each datajson}}
+        {{#if completed}}
+            <strike>{{name}}</strike> <br><br> 
+        {{else}}
+            <p>{{name}}</p>
+        {{/if}}
+    {{/each}}
+</section>
