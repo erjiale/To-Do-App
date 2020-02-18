@@ -25,6 +25,7 @@
 </footer>
 
 <section>
+    <h2>To-Do List</h2>
     {{#each datajson}}
         {{#if completed}}
             <strike>{{name}}</strike> <br><br> 
@@ -33,3 +34,11 @@
         {{/if}}
     {{/each}}
 </section>
+
+<h2>Form to Submit Data</h2>
+<form action="/" method="POST">
+    <fieldset>
+        <input id="data_input" type="text" name="data_input"> <br>
+        <input type="submit" value="Submit!"> <br>
+    </fieldset>
+</form>
