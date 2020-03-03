@@ -1,30 +1,8 @@
 <header>
-    <h1>To-Do-App</h1>
+    <a href="/"><h1>To-Do-App</h1></a>
 </header>
 
-<section>
-    <h2>Projects</h2>
-</section>
-
-<div class="ravenous">
-    <a>
-        <img src="./Images/ravenous2.png" class="center">
-    </a>
-</div>
-
-<section>
-    <p class="link-style"> Link: <a href="https://github.com/erjiale/ravenous-website/tree/master/ravenous"> Ravenous Website Repository </a> </p>
-        <!--End of Project 1-->
-    <p class="link-style"> Link: <a href="https://github.com/erjiale/Dictionary-Pronunciation"> C++ Dictionary Repo </a> </p>
-        <!--End of Project 2-->
-</section>
-
-<footer>
-    <p></p>
-    <span>LinkedIn: <a href="https://www.linkedin.com/in/jiale-jay-qiu-548812181"> www.linkedin.com/in/jiale-jay-qiu-548812181 </a> </span>
-</footer>
-
-<section>
+{{!-- <section>
     <h2>To-Do List</h2>
     {{#each datajson}}
         {{#if completed}}
@@ -33,17 +11,18 @@
             <p>{{name}}</p>
         {{/if}}
     {{/each}}
-</section>
+</section> --}}
 
-<h2>Form to Submit Data</h2>
+{{!-- part 1 d --}}
+{{!-- <h2>Form to Submit Data</h2>
 <form action="/" method="POST">
     <fieldset>
-        <input  type="text" name="data_input"> <br>
+        <input type="text" name="data_input"> <br>
         <input type="submit" value="Submit!"> <br>
     </fieldset>
-</form>
+</form> --}}
 
 <section>
-    <h2>HTTP Requests to API</h2>
-    <a href="/new_user">New User?</a>
+    <a href="/register"><button><h3>Register</h3></button></a>
+    <a href="/login"><button><h3>Login</h3></button></a>
 </section>

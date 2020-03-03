@@ -1,0 +1,11 @@
+<header>
+    <a href="/"><h1>To-Do-App</h1></a>
+</header>
+
+<h2>Hello, {{username}} !</h2>
+
+<ul>{{#each list}}<li>{{content}}</li>{{/each}}</ul>
+
+<form action="/logout" method="GET">
+    <section><button><h3>Logout</h3></button></section>
+</form>
