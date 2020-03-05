@@ -5,24 +5,9 @@
     <input class="center" type="submit" value="Add new item">
 </form>
 
-<ul>
-    {{#each list}}
-        {{#if completed}}
-            <li>    
-                <strike>{{content}}</strike>
-            </li>
-        {{else}}
-            <li>
-            
-                {{content}}
-                <form class="same-line" action="/updateitem" method="POST">
-                    <input type="submit" name="completed_input" value="Completed">
-                </form>
-            </li>
-        {{/if}}
-
-    {{/each}}
-</ul>
+<form action="/all-todos" method="GET">
+    <section><button><h3>All to-dos</h3></button></section>
+</form>
 
 <form action="/logout" method="GET">
     <section><button><h3>Logout</h3></button></section>

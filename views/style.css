@@ -75,4 +75,5 @@ input {
 
 .same-line {
     display: inline-block;
+    margin-top: 0.5em;
 }
