@@ -1,11 +1,31 @@
-<header>
-    <a href="/"><h1>To-Do-App</h1></a>
-</header>
+<h2>Hello, {{username}}!</h2>
 
-<h2>Hello, {{username}} !</h2>
+<form action="/newitem" method="POST">
+    <input class="center" type="text" placeholder="new to-do item" name="todo_input"> <br>
+    <input class="center" type="submit" value="Add new item">
+</form>
 
-<ul>{{#each list}}<li>{{content}}</li>{{/each}}</ul>
+<ul>
+    {{#each list}}
+        {{#if completed}}
+            <li>    
+                <strike>{{content}}</strike>
+            </li>
+        {{else}}
+            <li>
+            
+                {{content}}
+                <form class="same-line" action="/updateitem" method="POST">
+                    <input type="submit" name="completed_input" value="Completed">
+                </form>
+            </li>
+        {{/if}}
+
+    {{/each}}
+</ul>
 
 <form action="/logout" method="GET">
     <section><button><h3>Logout</h3></button></section>
 </form>
+
+

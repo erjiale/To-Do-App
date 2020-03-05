@@ -72,3 +72,7 @@ a {
 input {
     align-content: center;
 }
+
+.same-line {
+    display: inline-block;
+}

@@ -59,7 +59,7 @@ app.get("/login", function(req,res) {
 });
 
 app.post("/login", async (req,res) => {
-    // authenticatinG
+    // authentication
     try {
         const response = await axios.post(TODO_API_URL + '/auth', { username: req.body.username_input});
         res.cookie('Authentication', response.data.token, {
@@ -70,47 +70,17 @@ app.post("/login", async (req,res) => {
             signed: true,
             httpOnly: true
         });
-        res.redirect('/user');
+        res.redirect('user');
     } catch(err) {
-        if (err.response.status === 400) {
+        if (err.response.status === 404) {
             res.render("error", {
                 message: "User does not exist",
-                error: {status:400}
+                error: {status:404}
             })
         }
         console.log(err);
     }
 
-    app.get('/hi', (req,res) => {
-        res.send(req.signedCookies);
-    })
-
-
-    // var token = (await axios.post(TODO_API_URL + '/auth', {username: req.body.username_input, headers: {'content-type': application/json}}));
-    // res.cookie("Authentication", token);
-    // var todo = (await axios.get(TODO_API_URL + '/todo-item', {headers: {'Authorization': token} })).data;
-    // res.render('user', {username: req.body.username_input, list: todo}); 
-    // axios.post(TODO_API_URL + '/auth', {
-    //     username: req.body.username_input 
-    // })
-    // .then(function(response) {
-    //     // console.log(response);
-    //     var token = response.data;
-    //     // res.cookie('Username', req.body.username_input, {
-    //     //     signed: true,
-    //     //     httpOnly: true
-    //     // });
-    //     res.cookie('Authentication', token, {
-    //         signed: true,
-    //         httpOnly: true
-    //     });
-    //     // res.render("user", {username:req.body.username_input});
-    //     // res.setHeader('Authentication', token);
-    //     res.render('user');
-    // })
-    // .catch(function(error) {
-    //     console.log(error);
-    // });
 });
 
 app.get('/user', async (req,res) => {
@@ -118,8 +88,7 @@ app.get('/user', async (req,res) => {
     try {
         if (req.signedCookies.Authentication === undefined) {
             res.render('error', {
-                message: "User not authenticated",
-                error: {status:401}
+                message: "User is not authenticated"
             })
         }
         else {
@@ -128,51 +97,104 @@ app.get('/user', async (req,res) => {
                     Cookie: `token=${req.signedCookies.Authentication}`
                 }   
             })
-            res.render('user', {username: req.body.username_input, list: response.data})
+            var user = req.signedCookies.Username;
+            res.render('user', {username: user, list: response.data})
         }
     } catch(err) {
-        if (err.response.status === 400) {
+        if (err.response.status === 404) {
 			res.render("error", {
 				message: "User doesn't exist",
-				error: {status: 400}
+				error: {status: 404}
 			})
 		}
         console.log(err);
     }
-    // get data about all todo items under the currently authorized user
-    // var token = req.signedCookies.Authentication;
-    // axios.get(TODO_API_URL + "/todo-item", {
-    //     headers: {
-    //         'Authorization': token
-    //     }
-    // }).then(function(response) {
-    //     const todo = response.data;
-    //     res.render("user", { list: response.data });
-    // }).catch(function(error) {
-    //     console.log(error);
-    // });
-
-    // creating new todo item under the currently authenticated user
-    // axios.get(TODO_API_URL + '/todo-item', {
-    //     content: 'first to-do'
-    // })
-    // .then(function(response) {
-    //     console.log(response);
-    //     // res.render('user');
-    // })
-    // .catch(function(error) {
-    //     console.log(error);
-    // });
-
-    // res.render('user');
 });
+
+app.post("/newitem", async(req, res) => {   
+    // creating new todo item under the currently authenticated user
+    try {
+        if (req.signedCookies.Authentication === undefined) {
+            res.render('error', {
+                message: "User is not authenticated"
+            });
+        }
+        else {
+            await axios({
+                method: "POST",
+                url: TODO_API_URL + '/todo-item',
+                headers: {
+                    Cookie: `token=${req.signedCookies.Authentication}`
+                },
+                data: {
+                    content: req.body.todo_input
+                }
+            })
+            res.redirect('user');
+        }
+    } catch(err) {
+        console.log(err);
+    }
+});
+
+app.post('/updateitem', async (req, res) => {
+    try {
+        if (req.signedCookies === undefined) {
+            res.render('error', {message: "User is not authenticated"})
+        }
+        else {
+            await axios({
+                method: "PUT",
+                url: TODO_API_URL + `/todo-item/${req.params.id}`,
+                headers: {
+                    Cookie: `token=${req.signedCookies.Authentication}`
+                },
+                data: {
+                    completed: true
+                }
+            })
+            res.redirect('user');
+            // axios.put(TODO_API_URL + `/todo-item/${req.params.id}`, {
+            //     headers: {
+            //         Cookie: `token=${req.signedCookies.Authentication}`
+            //     },
+            //     data: {
+            //         completed: true
+            //     }
+            // })
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
+})
+
+// app.get('/delete/:id', async(req,res) => {
+//     try {
+//         if (req.signedCookies === undefined) {
+//             res.render('error', {
+//                 message: "User is not authenticated"
+//             })
+//         }
+//         else {
+//             await axios.delete(TODO_API_URL + '/todo-item/' + `${req.params.id}`, {
+//                 headers: {
+//                     Cookie: `token=${req.signedCookies.Authentication}`
+//                 }
+//             })
+//             res.redirect('user');
+//         }
+//     } catch(err) {
+//         console.log(err);
+//     }
+// });
 
 app.get('/logout', async (req,res)=> {
     try {
         res.clearCookie('Authentication');
         res.clearCookie('Username');
         res.redirect('/');
-        console.log("Successfully logged out")
+        console.log("Successfully logged out");
     } catch(err) {
         console.log(err);
     }
